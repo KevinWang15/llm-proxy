@@ -18,8 +18,7 @@ export default {
           top_k: 50,
           max_tokens: 512,
           repetition_penalty: 1,
-          stop: ["[/INST]"],
-          prompt_format_string: "[INST] {prompt}\n [/INST]",
+          stop: req.stop || ["[/INST]"],
         };
       },
       processResponseBody: (resp) => {
@@ -29,13 +28,14 @@ export default {
     {
       requiresProxy: true,
       path: "/gpt-3.5-turbo",
-      upstreamSite: "https://openai.api2d.net/v1/chat/completions",
+      upstreamSite: "https://openai.api2d.net/v1/completions",
       extraHeadersForUpstream: {
         Authorization: "Bearer ...",
       },
       processRequestBody: (req) => {
         return {
           model: "gpt-3.5-turbo",
+          stop: req.stop || null,
           messages: req.messages || [{ role: "user", content: req.prompt }],
         };
       },
@@ -46,13 +46,14 @@ export default {
     {
       requiresProxy: true,
       path: "/gpt-4-0613",
-      upstreamSite: "https://openai.api2d.net/v1/chat/completions",
+      upstreamSite: "https://openai.api2d.net/v1/completions",
       extraHeadersForUpstream: {
         Authorization: "Bearer ...",
       },
       processRequestBody: (req) => {
         return {
           model: "gpt-4-0613",
+          stop: req.stop || null,
           messages: req.messages || [{ role: "user", content: req.prompt }],
         };
       },
